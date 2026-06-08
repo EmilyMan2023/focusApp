@@ -30,6 +30,11 @@ db.init_app(app)
 migrate.init_app(app, db)
 jwt.init_app(app)
 
+from models.user import User
+from models.task import Task
+from models.preference import Preference
+from models.focus_session import FocusSession
+
 @app.route("/api/test")
 def test():
     return {"message": "Backend connected to PostgreSQL setup"}
