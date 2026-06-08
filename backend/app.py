@@ -1,0 +1,38 @@
+# from flask import Flask
+# from flask_cors import CORS
+
+# app = Flask(__name__)
+# CORS(app)
+
+# @app.route("/")
+# def home():
+#     return {"message": "Backend is running"}
+
+# @app.route("/api/test")
+# def test():
+#     return {"message": "Hello from Flask"}
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
+
+from flask import Flask
+from flask_cors import CORS
+
+from config import Config
+from extensions import db, migrate, jwt
+
+app = Flask(__name__)
+app.config.from_object(Config)
+
+CORS(app)
+
+db.init_app(app)
+migrate.init_app(app, db)
+jwt.init_app(app)
+
+@app.route("/api/test")
+def test():
+    return {"message": "Backend connected to PostgreSQL setup"}
+
+if __name__ == "__main__":
+    app.run(debug=True)
