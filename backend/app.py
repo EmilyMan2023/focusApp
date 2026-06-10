@@ -35,6 +35,10 @@ from models.task import Task
 from models.preference import Preference
 from models.focus_session import FocusSession
 
+from routes.auth import auth_bp
+
+app.register_blueprint(auth_bp, url_prefix="/api/auth")
+
 @app.route("/api/test")
 def test():
     return {"message": "Backend connected to PostgreSQL setup"}
