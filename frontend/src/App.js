@@ -74,28 +74,109 @@
 
 // export default App;
 
-import { useEffect, useState } from "react";
-import { getTest } from "./api/apiFunctions";
+// import { useEffect, useState } from "react";
+// import { getTest } from "./api/apiFunctions";
+// import axios from "axios";
+
+// function App() {
+//   const [message, setMessage] = useState("loading...");
+
+//   const user = JSON.parse(
+//   localStorage.getItem("user") || "null"
+//   );
+
+//   useEffect( () => {
+//     const t = async () => {
+//       const a = await getTest();
+//       setMessage(a.data.message)
+//       console.log(a)
+//     }
+//     t()
+    
+//   }, []);
+
+//   const testRegister = async () => {
+//   try {
+//     const response = await axios.post(
+//       "http://localhost:5000/api/auth/register",
+//       {
+//         display_name: "Emily",
+//         email: "emily@test.com",
+//         password: "password123",
+//       }
+//     );
+
+//     console.log(response.data);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+// const testLogin = async () => {
+//   try {
+//     const response = await axios.post(
+//       "http://localhost:5000/api/auth/login",
+//       {
+//         email: "emily@test.com",
+//         password: "password123",
+//       }
+//     );
+
+//     console.log(response.data);
+
+//     localStorage.setItem("token", response.data.access_token);
+//     localStorage.setItem(
+//   "user",
+//   JSON.stringify(response.data.user)
+// );
+//   } catch (error) {
+//     console.error(error.response.data);
+//   }
+// };
+
+//   return (
+//     <div style={{ padding: 20 }}>
+//       <h1>Test Page</h1>
+//       <p>Message: {message}</p>
+
+//       <button onClick={testRegister}>
+//         Test Register
+//       </button>
+//       <button onClick={testLogin}>
+//         Test Login
+//       </button>
+//       <h1>
+//         Hello {user ? user.display_name : "Guest"}
+//       </h1>
+//     </div>
+    
+//   );
+// }
+
+// export default App;
+
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import { useState } from "react";
 
 function App() {
-  const [message, setMessage] = useState("loading...");
-
-  useEffect( () => {
-    const t = async () => {
-      const a = await getTest();
-      setMessage(a.data.message)
-      console.log(a)
-    }
-    t()
-    
-  }, []);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Test Page</h1>
-      <p>Message: {message}</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={token ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={token ? <Dashboard setToken={setToken} /> : <Navigate to="/login" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
+
 export default App;
+
