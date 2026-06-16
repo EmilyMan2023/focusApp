@@ -6,25 +6,41 @@ import Typography from "@mui/material/Typography";
 import MinimizeIcon from "@mui/icons-material/Minimize";
 import CloseIcon from "@mui/icons-material/Close";
 
-function Widget({ widget, bringToFront, closeWidget, children }) {
+function Widget({ widget, bringToFront, closeWidget, children, updateWidgetPosition, updateWidgetSize }) {
   const [minimized, setMinimized] = useState(false);
 
   return (
-    <Rnd
-    size={{
-        width: 360,
-        height: minimized ? 45 : 300,
-    }}
-    minHeight={45}
-    minWidth={250}
+  <Rnd
     default={{
-        x: widget.x,
-        y: widget.y,
+      x: widget.x,
+      y: widget.y,
+      width: widget.width || 380,
+      height: widget.height || 320,
     }}
+    size={
+      minimized
+        ? { width: widget.width || 380, height: 45 }
+        : undefined
+    }
+    minWidth={280}
+    minHeight={45}
     bounds="window"
     onMouseDown={() => bringToFront(widget.id)}
     style={{ zIndex: widget.zIndex }}
-    >
+
+    onDragStop={(e, d) => {
+  updateWidgetPosition(widget.id, d.x, d.y);
+}}
+onResizeStop={(e, direction, ref, delta, position) => {
+  updateWidgetSize(
+    widget.id,
+    parseInt(ref.style.width),
+    parseInt(ref.style.height)
+  );
+
+  updateWidgetPosition(widget.id, position.x, position.y);
+}}
+  >
     <Box
         sx={{
         height: minimized ? "45px" : "100%",
@@ -63,9 +79,15 @@ function Widget({ widget, bringToFront, closeWidget, children }) {
         </Box>
 
         {!minimized && (
-          <Box sx={{ p: 2, overflow: "auto", flex: 1 }}>
-            {children}
-          </Box>
+        <Box
+          sx={{
+            p: 2,
+            overflow: "auto",
+            flex: 1,
+          }}
+        >
+          {children}
+        </Box>
         )}
       </Box>
     </Rnd>

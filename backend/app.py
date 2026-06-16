@@ -38,12 +38,17 @@ from models.focus_session import FocusSession
 from routes.auth import auth_bp
 from routes.tasks import tasks_bp
 from routes.focus_sessions import focus_sessions_bp
+from routes.preferences import preferences_bp
 
 app.register_blueprint(auth_bp, url_prefix="/api/auth")
 app.register_blueprint(tasks_bp, url_prefix="/api/tasks")
 app.register_blueprint(
     focus_sessions_bp,
     url_prefix="/api/focus-sessions"
+)
+app.register_blueprint(
+    preferences_bp,
+    url_prefix="/api/preferences"
 )
 
 @app.route("/api/test")
