@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Button from "@mui/material/Button";
+import InputBase from '@mui/material/InputBase';
 
 function TaskList(){
     
@@ -74,15 +76,15 @@ const deleteTask = async (taskId) => {
 return (
   <div>
     <form onSubmit={createTask}>
-      <input
+      <InputBase
         placeholder="New task"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <button type="submit">
+      <Button type="submit">
         Add Task
-      </button>
+      </Button>
     </form>
 
     <ul>
@@ -106,9 +108,9 @@ return (
             {task.title}
           </span>
 
-          <button onClick={() => deleteTask(task.id)}>
+          <Button onClick={() => deleteTask(task.id)}>
             Delete
-          </button>
+          </Button>
         </li>
       ))}
     </ul>

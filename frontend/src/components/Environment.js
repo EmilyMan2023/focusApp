@@ -1,18 +1,40 @@
-function Environment() {
+import Slider from "@mui/material/Slider";
+import Button from "@mui/material/Button";
+import StopCircleIcon from '@mui/icons-material/StopCircle';
+import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
+
+function Environment({     changeBackground,
+  playSound,
+  stopSound,
+  volume,
+  changeVolume, }) {
   return (
     <div>
-      <h3>Background & Sounds</h3>
+      <h4>Background</h4>
+      <Button onClick={() => changeBackground("forest")}>
+        Forest
+      </Button>
 
-      <p>Choose background:</p>
-      <button>Forest</button>
-      <button>City</button>
-      <button>Library</button>
+      <Button onClick={() => changeBackground("library")}>
+        Library
+      </Button>
 
-      <p>Choose sound:</p>
-      <button>Rain</button>
-      <button>Coffee Shop</button>
-      <button>White Noise</button>
+      <h4>Sounds</h4>
+      <Button onClick={() => playSound("lofi")}>Lofi</Button>
+      <Button onClick={() => playSound("rain")}>Rain</Button>
+      
+      <h4>Volume</h4>
+      
+      <Slider
+        value={volume}
+        min={0}
+        max={100}
+        onChange={(e, newValue) => changeVolume(newValue)}
+        
+      />
+      <Button onClick={stopSound}><StopCircleIcon/></Button>
     </div>
+    
   );
 }
 
