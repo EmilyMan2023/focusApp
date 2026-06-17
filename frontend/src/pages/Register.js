@@ -9,6 +9,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { API_URL } from "../api/config";
 
+import background from "../assets/backgrounds/background.jpg";
+
 function Register() {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,21 +31,27 @@ function Register() {
   };
 
   return (
-  <Box
-    sx={{
-      minHeight: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "#f4f4f4",
-    }}
-  >
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+
+        backgroundImage: `url(${background})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
     <Paper
       elevation={3}
       sx={{
         p: 5,
         width: 400,
         textAlign: "center",
+        backgroundColor: "rgba(255,255,255,0.85)",
+        backdropFilter: "blur(10px)",
         borderRadius: 3,
       }}
     >
