@@ -30,48 +30,58 @@ import cityImage from "../assets/backgrounds/city.jpg";
 import axios from "axios";
 import { API_URL } from "../api/config";
 
-const defaultWidgets = [
-  {
-    id: 1,
-    type: "tasks",
-    title: "Tasks",
-    x: 550,
-    y: 100,
-    width: 420,
-    height: 420,
-    zIndex: 1,
-  },
-  {
-    id: 2,
-    type: "timer",
-    title: "Pomodoro Timer",
-    x: 150,
-    y: 430,
-    width: 360,
-    height: 300,
-    zIndex: 2,
-  },
-  {
-    id: 3,
-    type: "environment",
-    title: "Background & Sounds",
-    x: 150,
-    y: 100,
-    width: 420,
-    height: 360,
-    zIndex: 3,
-  },
-  {
-    id: 4,
-    type: "wordle",
-    title: "Daily Puzzle",
-    x: 550,
-    y: 430,
-    width: 380,
-    height: 420,
-    zIndex: 4,
-  },
-];
+  const defaultWidgets = [
+      {
+        id: 1,
+        type: "environment",
+        title: "Background & Sounds",
+        x: 160,
+        y: 90,
+        width: 360,
+        height: 360,
+        zIndex: 1,
+      },
+      {
+        id: 2,
+        type: "tasks",
+        title: "Tasks",
+        x: 560,
+        y: 90,
+        width: 380,
+        height: 340,
+        zIndex: 2,
+      },
+      {
+        id: 3,
+        type: "timer",
+        title: "Pomodoro Timer",
+        x: 160,
+        y: 480,
+        width: 360,
+        height: 300,
+        zIndex: 3,
+      },
+      {
+        id: 4,
+        type: "wordle",
+        title: "Daily Puzzle",
+        x: 560,
+        y: 460,
+        width: 380,
+        height: 340,
+        zIndex: 4,
+      },
+      {
+        id: 5,
+        type: "streak",
+        title: "Focus Streak",
+        x: 980,
+        y: 90,
+        width: 320,
+        height: 260,
+        zIndex: 5,
+      },
+    ];
 
 
 function Dashboard() {
@@ -207,6 +217,8 @@ const handleMenuClose = () => {
     window.location.href = "/login";
   };
 
+
+
   const openWidget = (type) => {
     setWidgets((prev) => {
       const existing = prev.find((widget) => widget.type === type);
@@ -227,19 +239,19 @@ const handleMenuClose = () => {
         streak: "Focus Streak",
       };
 
-      const positions = {
-        environment: { x: 150, y: 100 },
-        tasks: { x: 550, y: 100 },
-        timer: { x: 150, y: 450 },
-        wordle: { x: 550, y: 450 },
-        streak: { x: 950, y: 100 },
-      };
 
+      const positions = {
+        environment: { x: 160, y: 90 },
+        tasks: { x: 560, y: 90 },
+        timer: { x: 160, y: 480 },
+        wordle: { x: 560, y: 460 },
+        streak: { x: 980, y: 90 },
+      };
       const widgetSizes = {
         tasks: { width: 380, height: 340 },
         timer: { width: 360, height: 300 },
         environment: { width: 360, height: 360 },
-        wordle: { width: 380, height: 380 },
+        wordle: { width: 380, height: 300 },
         streak: { width: 320, height: 260 },
       };
 
@@ -346,6 +358,7 @@ const handleMenuClose = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        backgroundColor: "#D6ECFF",
       }}
     >
 <Sidebar openWidget={openWidget} />

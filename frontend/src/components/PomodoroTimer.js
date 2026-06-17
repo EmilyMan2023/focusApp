@@ -25,7 +25,7 @@ export default function PomodoroTimer({ showAppNotification }) {
   const saveFocusSession = async () => {
     try {
       const response = await axios.post(
-        `${API_URL}/api/focus-sessions/`,
+        `${API_URL}/api/focus-sessions`,
         {
           duration_minutes: inputMinutes,
           completed: true,
