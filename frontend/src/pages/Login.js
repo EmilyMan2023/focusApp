@@ -2,6 +2,12 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
 function Login({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,32 +43,86 @@ const handleLogin = async (e) => {
   }
 };
 
-  return (
-    <div>
-      <h1>Login</h1>
+ return (
+  <Box
+    sx={{
+      minHeight: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#f4f4f4",
+    }}
+  >
+    <Paper
+      elevation={3}
+      sx={{
+        p: 5,
+        width: 400,
+        textAlign: "center",
+        borderRadius: 3,
+      }}
+    >
+      <Typography
+        variant="h3"
+        sx={{
+          fontWeight: 700,
+          mb: 1,
+        }}
+      >
+        Welcome to Focusify
+      </Typography>
+
+      <Typography
+        variant="subtitle1"
+        sx={{
+          color: "text.secondary",
+          mb: 4,
+        }}
+      >
+        A calm workspace to support a full workday
+      </Typography>
 
       <form onSubmit={handleLogin}>
-        <input
-          placeholder="Email"
+        <TextField
+          fullWidth
+          label="Email Address"
+          margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <input
-          placeholder="Password"
+        <TextField
+          fullWidth
           type="password"
+          label="Password"
+          margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button type="submit">Login</button>
+        <Button
+          fullWidth
+          variant="contained"
+          type="submit"
+          sx={{
+            mt: 2,
+            mb: 2,
+          }}
+        >
+          Login
+        </Button>
       </form>
 
-      <p>
-        No account? <Link to="/register">Register</Link>
-      </p>
-    </div>
-  );
+      <Typography variant="body2">
+        Don't have an account?
+      </Typography>
+
+      <Button href="/register">
+        Register
+      </Button>
+    </Paper>
+  </Box>
+);
 }
 
 export default Login;

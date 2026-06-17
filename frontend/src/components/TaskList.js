@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import InputBase from '@mui/material/InputBase';
+import TextField from "@mui/material/TextField";
+import Checkbox from '@mui/material/Checkbox';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 function TaskList(){
     
@@ -76,10 +80,11 @@ const deleteTask = async (taskId) => {
 return (
   <div>
     <form onSubmit={createTask}>
-      <InputBase
-        placeholder="New task"
+      <TextField
+        label="New Task"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        size="small"
       />
 
       <Button type="submit">
@@ -87,33 +92,37 @@ return (
       </Button>
     </form>
 
-    <ul>
+    <Box>
       {tasks.map((task) => (
-        <li key={task.id}>
-          <input
-            type="checkbox"
+        <Box
+          key={task.id}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            mt: 1,
+          }}
+        >
+          <Checkbox
             checked={task.completed}
             onChange={() => toggleTask(task)}
           />
 
-          <span
-            style={{
-              textDecoration: task.completed
-                ? "line-through"
-                : "none",
-              marginLeft: "8px",
-              marginRight: "10px",
+          <Typography
+            sx={{
+              textDecoration: task.completed ? "line-through" : "none",
+              flexGrow: 1,
             }}
           >
             {task.title}
-          </span>
+          </Typography>
 
           <Button onClick={() => deleteTask(task.id)}>
             Delete
           </Button>
-        </li>
+        </Box>
       ))}
-    </ul>
+    </Box>
   </div>
 );
 }
