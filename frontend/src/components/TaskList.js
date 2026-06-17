@@ -7,6 +7,8 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
+import { API_URL } from "../api/config";
+
 function TaskList(){
     
     const [tasks, setTasks] = useState([]);
@@ -15,7 +17,7 @@ function TaskList(){
     const token = localStorage.getItem("token");
 
     const getTasks = async () => {
-    const response = await axios.get("http://localhost:5000/api/tasks/", {
+    const response = await axios.get(`${API_URL}/api/tasks/`, {
         headers: {
         Authorization: `Bearer ${token}`,
         },
@@ -28,7 +30,7 @@ function TaskList(){
     e.preventDefault();
 
     await axios.post(
-        "http://localhost:5000/api/tasks/",
+        `${API_URL}/api/tasks/`,
         {
         title,
         description: "",
@@ -50,7 +52,7 @@ function TaskList(){
 
     const toggleTask = async (task) => {
   await axios.patch(
-    `http://localhost:5000/api/tasks/${task.id}`,
+    `${API_URL}/api/tasks/${task.id}`,
     {
       completed: !task.completed,
     },
@@ -66,7 +68,7 @@ function TaskList(){
 
 const deleteTask = async (taskId) => {
   await axios.delete(
-    `http://localhost:5000/api/tasks/${taskId}`,
+    `${API_URL}/api/tasks/${taskId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

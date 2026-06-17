@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import axios from "axios";
+import { API_URL } from "../api/config";
 
 
 export default function PomodoroTimer({ showAppNotification }) {
@@ -24,7 +25,7 @@ export default function PomodoroTimer({ showAppNotification }) {
   const saveFocusSession = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/focus-sessions/",
+        `${API_URL}/api/focus-sessions/`,
         {
           duration_minutes: inputMinutes,
           completed: true,

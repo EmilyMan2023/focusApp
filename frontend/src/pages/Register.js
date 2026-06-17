@@ -7,6 +7,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { API_URL } from "../api/config";
 
 function Register() {
   const [displayName, setDisplayName] = useState("");
@@ -18,7 +19,7 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    await axios.post("http://localhost:5000/api/auth/register", {
+    await axios.post(`${API_URL}/api/auth/register/`, {
       display_name: displayName,
       email,
       password,

@@ -7,6 +7,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { API_URL } from "../api/config";
 
 function Login({ setToken }) {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ const handleLogin = async (e) => {
   console.log("Login clicked");
 
   try {
-    const response = await axios.post("http://localhost:5000/api/auth/login", {
+    const response = await axios.post(`${API_URL}/api/auth/login/`, {
       email,
       password,
     });

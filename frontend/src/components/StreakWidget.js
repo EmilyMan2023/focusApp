@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api/config";
 
 function StreakWidget() {
   const [streak, setStreak] = useState(0);
@@ -9,7 +10,7 @@ function StreakWidget() {
 
   const getStreak = async () => {
     const response = await axios.get(
-      "http://localhost:5000/api/analytics/streak",
+      `${API_URL}/api/analytics/streak/`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -28,6 +28,7 @@ import beachImage from "../assets/backgrounds/beach.jpg";
 import cityImage from "../assets/backgrounds/city.jpg";
 
 import axios from "axios";
+import { API_URL } from "../api/config";
 
 const defaultWidgets = [
   {
@@ -111,7 +112,7 @@ const handleMenuClose = () => {
 
   const savePreferences = async (updates) => {
     await axios.put(
-      "http://localhost:5000/api/preferences/",
+      `${API_URL}/api/preferences/`,
       updates,
       {
         headers: {
@@ -125,7 +126,7 @@ const handleMenuClose = () => {
 
   const getPreferences = async () => {
     const response = await axios.get(
-      "http://localhost:5000/api/preferences/",
+      `${API_URL}/api/preferences/`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
