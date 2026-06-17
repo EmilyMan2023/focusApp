@@ -39,6 +39,7 @@ from routes.auth import auth_bp
 from routes.tasks import tasks_bp
 from routes.focus_sessions import focus_sessions_bp
 from routes.preferences import preferences_bp
+from routes.analytics import analytics_bp
 
 app.register_blueprint(auth_bp, url_prefix="/api/auth")
 app.register_blueprint(tasks_bp, url_prefix="/api/tasks")
@@ -49,6 +50,11 @@ app.register_blueprint(
 app.register_blueprint(
     preferences_bp,
     url_prefix="/api/preferences"
+)
+
+app.register_blueprint(
+    analytics_bp,
+    url_prefix="/api/analytics"
 )
 
 @app.route("/api/test")

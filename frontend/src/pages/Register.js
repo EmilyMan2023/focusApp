@@ -2,6 +2,12 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
 function Register() {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,37 +28,86 @@ function Register() {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
+  <Box
+    sx={{
+      minHeight: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#f4f4f4",
+    }}
+  >
+    <Paper
+      elevation={3}
+      sx={{
+        p: 5,
+        width: 400,
+        textAlign: "center",
+        borderRadius: 3,
+      }}
+    >
+      <Typography
+        variant="h3"
+        sx={{
+          fontWeight: 700,
+          mb: 1,
+        }}
+      >
+        Register
+      </Typography>
+
 
       <form onSubmit={handleRegister}>
-        <input
-          placeholder="Display name"
+        <TextField
+          fullWidth
+          label="Display Name"
+          margin="normal"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
         />
 
-        <input
-          placeholder="Email"
+        <TextField
+          fullWidth
+          label="Email Address"
+          margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <input
-          placeholder="Password"
+        <TextField
+          fullWidth
           type="password"
+          label="Password"
+          margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button type="submit">Register</button>
+        <Button
+          fullWidth
+          variant="contained"
+          type="submit"
+          sx={{
+            mt: 2,
+            mb: 2,
+          }}
+        >
+          Register
+        </Button>
       </form>
 
-      <p>
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
-    </div>
+      <Typography variant="body2">
+        Already have an account?
+      </Typography>
+
+      <Button href="/login">
+        Login
+      </Button>
+    </Paper>
+  </Box>
   );
 }
 
 export default Register;
+
+

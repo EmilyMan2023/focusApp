@@ -7,9 +7,25 @@ import TaskList from "../components/TaskList";
 import PomodoroTimer from "../components/PomodoroTimer";
 import Environment from "../components/Environment";
 import Wordle from "../components/Wordle";
+import StreakWidget from "../components/StreakWidget";
+
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Avatar from "@mui/material/Avatar";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 import lofiBeat from "../assets/sounds/lofi.mp3";
-import rain from "../assets/sounds/rainy.mp3";
+import rain from "../assets/sounds/rain.mp3";
+import nature from "../assets/sounds/nature.mp3";
+import cafe from "../assets/sounds/cafe.mp3";
+
+import forestImage from "../assets/backgrounds/forest.jpg";
+import libraryImage from "../assets/backgrounds/library.jpg";
+import beachImage from "../assets/backgrounds/beach.jpg";
+import cityImage from "../assets/backgrounds/city.jpg";
 
 import axios from "axios";
 
@@ -56,7 +72,9 @@ const defaultWidgets = [
   },
 ];
 
+
 function Dashboard() {
+  const [anchorEl, setAnchorEl] = useState(null);
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
   const [widgets, setWidgets] = useState(() => {
@@ -70,6 +88,22 @@ function Dashboard() {
 
   const audioRef = useRef(null);
   const token = localStorage.getItem("token");
+
+  const [selectedSound, setSelectedSound] = useState("");
+
+const [notificationOpen, setNotificationOpen] = useState(false);
+
+  const showAppNotification = () => {
+    setNotificationOpen(true);
+  };
+
+  const handleMenuOpen = (event) => {
+  setAnchorEl(event.currentTarget);
+};
+
+const handleMenuClose = () => {
+  setAnchorEl(null);
+};
 
   useEffect(() => {
     localStorage.setItem("widgetLayout", JSON.stringify(widgets));
@@ -123,11 +157,14 @@ function Dashboard() {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
+      setSelectedSound(soundName);
     }
 
     const sounds = {
       lofi: lofiBeat,
       rain: rain,
+      nature: nature,
+      cafe: cafe
     };
 
     const audio = new Audio(sounds[soundName]);
@@ -147,6 +184,7 @@ function Dashboard() {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       audioRef.current = null;
+      setSelectedSound("");
     }
   };
 
@@ -185,6 +223,7 @@ function Dashboard() {
         timer: "Pomodoro Timer",
         environment: "Background & Sounds",
         wordle: "Daily Puzzle",
+        streak: "Focus Streak",
       };
 
       const positions = {
@@ -192,13 +231,15 @@ function Dashboard() {
         tasks: { x: 550, y: 100 },
         timer: { x: 150, y: 450 },
         wordle: { x: 550, y: 450 },
+        streak: { x: 950, y: 100 },
       };
 
       const widgetSizes = {
-        tasks: { width: 360, height: 340 },
+        tasks: { width: 380, height: 340 },
         timer: { width: 360, height: 300 },
         environment: { width: 360, height: 360 },
         wordle: { width: 380, height: 380 },
+        streak: { width: 320, height: 260 },
       };
 
       const position = positions[type];
@@ -261,22 +302,34 @@ function Dashboard() {
   const renderWidgetContent = (type) => {
     if (type === "environment") {
       return (
-        <Environment
-          changeBackground={changeBackground}
-          playSound={playSound}
-          stopSound={stopSound}
-          volume={volume}
-          changeVolume={changeVolume}
-        />
+      <Environment
+        changeBackground={changeBackground}
+        playSound={playSound}
+        stopSound={stopSound}
+        volume={volume}
+        changeVolume={changeVolume}
+        background={background}
+        selectedSound={selectedSound}
+      />
       );
     }
 
     if (type === "tasks") return <TaskList />;
-    if (type === "timer") return <PomodoroTimer />;
+    if (type === "timer") {
+    return <PomodoroTimer showAppNotification={showAppNotification} />;
+  }
     if (type === "wordle") return <Wordle />;
+    if (type === "streak") return <StreakWidget />;
 
     return null;
   };
+
+  const backgroundImages = {
+  forest: forestImage,
+  library: libraryImage,
+  beach: beachImage,
+  city: cityImage
+};
 
   return (
     <Box
@@ -284,24 +337,81 @@ function Dashboard() {
         height: "100vh",
         width: "100vw",
         overflow: "hidden",
-        backgroundColor:
-          background === "forest"
-            ? "#dff3e3"
-            : background === "library"
-            ? "#efe3d0"
-            : background === "city"
-            ? "#dfe7f3"
-            : "#f4f4f4",
+
+        backgroundImage: backgroundImages[background]
+          ? `url(${backgroundImages[background]})`
+          : "none",
+
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
-      <Sidebar openWidget={openWidget} />
+<Sidebar openWidget={openWidget} />
 
-      <Box sx={{ marginLeft: "110px", p: 3 }}>
-        <h1>Hello {user?.display_name || "Guest"}</h1>
+      <Box
+        sx={{
+          marginLeft: "110px",
+          height: "100vh",
+          p: 1,
 
-        <button onClick={logout}>
-          Logout
-        </button>
+          backgroundColor: "rgba(255, 255, 255, 0.15)",
+          backdropFilter: "blur(1px)",
+          WebkitBackdropFilter: "blur(10px)",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
+          {/* <h1   style={{
+    marginLeft: "90px",
+  }}>Hello {user?.display_name || "Guest"}!</h1> */}
+
+    <IconButton 
+      onClick={handleMenuOpen}
+      sx={{
+        backgroundColor: "rgba(255,255,255,0.8)",
+        backdropFilter: "blur(10px)",
+        width: 56,
+        height: 56,
+        ml: 150,
+
+        "&:hover": {
+          backgroundColor: "rgba(255,255,255,0.95)",
+        },
+      }}
+      
+>
+  <Avatar>
+    {user?.display_name?.charAt(0)}
+  </Avatar>
+</IconButton>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleMenuClose}>
+              Settings
+            </MenuItem>
+
+            <MenuItem
+              onClick={() => {
+                handleMenuClose();
+                logout();
+              }}
+            >
+              Logout
+            </MenuItem>
+          </Menu>
+        </Box>
+
 
         {widgets.map((widget) => (
           <Widget
@@ -316,8 +426,29 @@ function Dashboard() {
           </Widget>
         ))}
       </Box>
-    </Box>
-  );
+      <Snackbar
+        open={notificationOpen}
+        autoHideDuration={6000}
+        onClose={() => setNotificationOpen(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        sx={{
+          mt: 8,
+          mr: 2,
+          zIndex: 9999,
+        }}
+      >
+        <Alert
+          onClose={() => setNotificationOpen(false)}
+          severity="success"
+        >
+          Great work! Take a short break before your next session.
+        </Alert>
+      </Snackbar>
+      </Box>
+    );
 }
 
 export default Dashboard;

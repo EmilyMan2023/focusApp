@@ -4,14 +4,17 @@ import LandscapeIcon from '@mui/icons-material/Landscape';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import TimerIcon from '@mui/icons-material/Timer';
 import ExtensionIcon from '@mui/icons-material/Extension';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 
 function Sidebar({ openWidget }) {
   return (
     <Box
       sx={{
-        width: 90,
+        width: 80,
         height: "100vh",
-        backgroundColor: "#1e1e1e",
+        backgroundColor: "rgba(255,255,255,0.15)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
         color: "white",
         position: "fixed",
         left: 0,
@@ -22,18 +25,21 @@ function Sidebar({ openWidget }) {
         gap: 2,
       }}
     >
-    <Button variant="contained" onClick={() => openWidget("environment")}>
+    <Button sx={{ mt: 5, height: 60, borderRadius: 3 }}variant="contained" onClick={() => openWidget("environment")}>
       <LandscapeIcon />
     </Button>
-      <Button variant="contained" onClick={() => openWidget("tasks")}>
+      <Button sx={{ height:60, borderRadius: 3 }} variant="contained" onClick={() => openWidget("tasks")}>
         <ChecklistIcon />
       </Button>
 
-      <Button variant="contained" onClick={() => openWidget("timer")}>
+      <Button sx={{ height:60, borderRadius: 3 }} variant="contained" onClick={() => openWidget("timer")}>
         <TimerIcon />
       </Button>
-    <Button variant="contained" onClick={() => openWidget("wordle")}>
+    <Button sx={{ height:60, borderRadius: 3 }} variant="contained" onClick={() => openWidget("wordle")}>
       <ExtensionIcon />
+    </Button>
+    <Button sx={{ height:60, borderRadius: 3 }} variant="contained" onClick={() => openWidget("streak")}>
+      <LocalFireDepartmentIcon/>
     </Button>
     </Box>
   );

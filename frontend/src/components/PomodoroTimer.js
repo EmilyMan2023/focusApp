@@ -6,12 +6,15 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import axios from "axios";
 
-export default function PomodoroTimer() {
+
+export default function PomodoroTimer({ showAppNotification }) {
   const token = localStorage.getItem("token");
 
   const [inputMinutes, setInputMinutes] = useState(25);
   const [time, setTime] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
 
   const startTimer = () => {
     setTime(inputMinutes * 60);
@@ -55,15 +58,38 @@ export default function PomodoroTimer() {
   }, [isRunning, time]);
 
   useEffect(() => {
-    if (time === 0 && isRunning) {
-      setIsRunning(false);
-      saveFocusSession();
-    }
+  if (time === 0 && isRunning) {
+    setIsRunning(false);
+    saveFocusSession();
+    showNotification();
+    showAppNotification();
+  }
   }, [time, isRunning]);
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
   const display = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+
+  const showNotification = () => {
+  if (!("Notification" in window)) {
+    alert("Focus session complete! Time for a break.");
+    return;
+  }
+
+  if (Notification.permission === "granted") {
+    new Notification("Focus session complete!", {
+      body: "Time to take a short break.",
+    });
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        new Notification("Focus session complete!", {
+          body: "Time to take a short break.",
+        });
+      }
+    });
+  }
+};
 
   return (
     <Box

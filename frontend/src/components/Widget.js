@@ -44,7 +44,7 @@ onResizeStop={(e, direction, ref, delta, position) => {
     <Box
         sx={{
         height: minimized ? "45px" : "100%",
-          backgroundColor: "white",
+          backgroundColor: "rgba(255,255,255,1.05)",
           borderRadius: 2,
           boxShadow: 4,
           overflow: "hidden",
@@ -54,8 +54,8 @@ onResizeStop={(e, direction, ref, delta, position) => {
       >
         <Box
           sx={{
-            backgroundColor: "#2c2c2c",
-            color: "white",
+            backgroundColor: "#f5f5f5",
+            color: "#333",
             p: 1,
             display: "flex",
             justifyContent: "space-between",
