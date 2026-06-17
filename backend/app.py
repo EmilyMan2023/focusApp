@@ -26,7 +26,7 @@ app.config.from_object(Config)
 
 CORS(app, origins=[
     "http://localhost:3000",
-    "https://focusify.onrender.com"
+    "https://focusify-vx24.onrender.com"
 ])
 
 db.init_app(app)
