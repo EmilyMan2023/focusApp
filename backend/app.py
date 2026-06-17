@@ -24,7 +24,10 @@ from extensions import db, migrate, jwt
 app = Flask(__name__)
 app.config.from_object(Config)
 
-CORS(app)
+CORS(app, origins=[
+    "http://localhost:3000",
+    "https://focusify.onrender.com"
+])
 
 db.init_app(app)
 migrate.init_app(app, db)
