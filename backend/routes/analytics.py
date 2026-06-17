@@ -31,6 +31,15 @@ def get_streak():
         streak += 1
         current_day -= timedelta(days=1)
 
+    print("Sessions found:", len(sessions))
+
+    for s in sessions:
+            print(
+                s.id,
+                s.completed,
+                s.end_time
+            )
+
     return jsonify({
         "current_streak": streak,
         "completed_today": today in focus_dates
