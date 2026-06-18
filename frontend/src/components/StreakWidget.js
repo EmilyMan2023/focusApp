@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../api/config";
 
-function StreakWidget() {
+function StreakWidget({ refreshTrigger }) {
   const [streak, setStreak] = useState(0);
   const [completedToday, setCompletedToday] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -38,9 +38,9 @@ function StreakWidget() {
     }
   };
 
-  useEffect(() => {
+    useEffect(() => {
     getStreak();
-  }, []);
+    }, [refreshTrigger]);
 
   if (loading) {
     return (

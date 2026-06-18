@@ -56,7 +56,7 @@ import { API_URL } from "../api/config";
         type: "timer",
         title: "Pomodoro Timer",
         x: 160,
-        y: 480,
+        y: 450,
         width: 360,
         height: 300,
         zIndex: 3,
@@ -68,7 +68,7 @@ import { API_URL } from "../api/config";
         x: 560,
         y: 460,
         width: 380,
-        height: 340,
+        height: 360,
         zIndex: 4,
       },
       {
@@ -103,6 +103,12 @@ function Dashboard() {
   const [selectedSound, setSelectedSound] = useState("");
 
 const [notificationOpen, setNotificationOpen] = useState(false);
+
+const [streakRefresh, setStreakRefresh] = useState(0);
+
+const refreshStreak = () => {
+  setStreakRefresh((prev) => prev + 1);
+};
 
   const showAppNotification = () => {
     setNotificationOpen(true);
@@ -244,14 +250,14 @@ const handleMenuClose = () => {
         environment: { x: 160, y: 90 },
         tasks: { x: 560, y: 90 },
         timer: { x: 160, y: 480 },
-        wordle: { x: 560, y: 460 },
+        wordle: { x: 560, y: 450 },
         streak: { x: 980, y: 90 },
       };
       const widgetSizes = {
         tasks: { width: 380, height: 340 },
         timer: { width: 360, height: 300 },
         environment: { width: 360, height: 360 },
-        wordle: { width: 380, height: 300 },
+        wordle: { width: 380, height: 360 },
         streak: { width: 320, height: 260 },
       };
 
@@ -329,10 +335,17 @@ const handleMenuClose = () => {
 
     if (type === "tasks") return <TaskList />;
     if (type === "timer") {
-    return <PomodoroTimer showAppNotification={showAppNotification} />;
-  }
+      return (
+        <PomodoroTimer
+          showAppNotification={showAppNotification}
+          refreshStreak={refreshStreak}
+        />
+      );
+    }
     if (type === "wordle") return <Wordle />;
-    if (type === "streak") return <StreakWidget />;
+    if (type === "streak") {
+      return <StreakWidget refreshTrigger={streakRefresh} />;
+    }
 
     return null;
   };

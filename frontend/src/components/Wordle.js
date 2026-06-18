@@ -1,31 +1,43 @@
 import { useState } from "react";
 
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+
 const WORDS = ["REACT", "FOCUS", "TIMER", "TASKS", "BREAK", "FAIRY"];
 
-
 function Wordle() {
-  const [guess, setGuess] = useState("");
-  const [guesses, setGuesses] = useState([]);
-  const [gameOver, setGameOver] = useState(false);
-
-  const getDailyAnswer = () => {
   const today = new Date().toISOString().split("T")[0];
 
-  const savedDate = localStorage.getItem("wordle_date");
-  const savedAnswer = localStorage.getItem("wordle_answer");
+  const guessesKey = `wordle_guesses_${today}`;
+  const gameOverKey = `wordle_gameOver_${today}`;
 
-  if (savedDate === today && savedAnswer) {
-    return savedAnswer;
-  }
+  const getDailyAnswer = () => {
+    const savedDate = localStorage.getItem("wordle_date");
+    const savedAnswer = localStorage.getItem("wordle_answer");
 
-  const newAnswer = WORDS[Math.floor(Math.random() * WORDS.length)];
+    if (savedDate === today && savedAnswer) {
+      return savedAnswer;
+    }
 
-  localStorage.setItem("wordle_date", today);
-  localStorage.setItem("wordle_answer", newAnswer);
+    const newAnswer = WORDS[Math.floor(Math.random() * WORDS.length)];
 
-  return newAnswer;
-};
-const [answer] = useState(getDailyAnswer);
+    localStorage.setItem("wordle_date", today);
+    localStorage.setItem("wordle_answer", newAnswer);
+
+    return newAnswer;
+  };
+
+  const [answer] = useState(getDailyAnswer);
+  const [guess, setGuess] = useState("");
+
+  const [guesses, setGuesses] = useState(() => {
+    const savedGuesses = localStorage.getItem(guessesKey);
+    return savedGuesses ? JSON.parse(savedGuesses) : [];
+  });
+
+  const [gameOver, setGameOver] = useState(() => {
+    return localStorage.getItem(gameOverKey) === "true";
+  });
 
   const submitGuess = (e) => {
     e.preventDefault();
@@ -38,11 +50,15 @@ const [answer] = useState(getDailyAnswer);
     }
 
     const newGuesses = [...guesses, cleanGuess];
+
     setGuesses(newGuesses);
+    localStorage.setItem(guessesKey, JSON.stringify(newGuesses));
+
     setGuess("");
 
-    if (cleanGuess === answer || newGuesses.length >= 6) {
+    if (cleanGuess === answer || newGuesses.length >= 5) {
       setGameOver(true);
+      localStorage.setItem(gameOverKey, "true");
     }
   };
 
@@ -94,20 +110,21 @@ const [answer] = useState(getDailyAnswer);
 
       {!gameOver ? (
         <form onSubmit={submitGuess}>
-          <input
+          <TextField
             value={guess}
-            maxLength={5}
+            inputProps={{ maxLength: 5 }}
             onChange={(e) => setGuess(e.target.value)}
             placeholder="Guess"
+            size="small"
           />
 
-          <button type="submit">
+          <Button type="submit">
             Guess
-          </button>
+          </Button>
         </form>
       ) : (
         <p>
-          Answer: <strong>{answer}</strong>
+          Completed for today! Answer: <strong>{answer}</strong>
         </p>
       )}
     </div>

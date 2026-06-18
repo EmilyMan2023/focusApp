@@ -8,7 +8,7 @@ import axios from "axios";
 import { API_URL } from "../api/config";
 
 
-export default function PomodoroTimer({ showAppNotification }) {
+export default function PomodoroTimer({ showAppNotification, refreshStreak }) {
   const token = localStorage.getItem("token");
 
   const [inputMinutes, setInputMinutes] = useState(25);
@@ -59,12 +59,20 @@ export default function PomodoroTimer({ showAppNotification }) {
   }, [isRunning, time]);
 
   useEffect(() => {
-  if (time === 0 && isRunning) {
-    setIsRunning(false);
-    saveFocusSession();
-    showNotification();
-    showAppNotification();
-  }
+    if (time === 0 && isRunning) {
+      const finishSession = async () => {
+        setIsRunning(false);
+
+        await saveFocusSession();
+
+        refreshStreak();
+
+        showNotification();
+        showAppNotification();
+      };
+
+      finishSession();
+    }
   }, [time, isRunning]);
 
   const minutes = Math.floor(time / 60);
